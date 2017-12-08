@@ -21,7 +21,7 @@
 #include <nmealib/util.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include "windowssupport.h"
+#include <sys/time.h>
 
 #ifdef  __cplusplus
 extern "C" {
