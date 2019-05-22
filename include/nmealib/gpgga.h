@@ -53,7 +53,7 @@ extern "C" {
  * | longitude   | Longitude, in NDEG (DDDMM.SSS)                         | LON (2)        |
  * | ew          | East or West ('E' or 'W')                              | LON (2)        |
  * | signal      | Signal quality (see the NMEALIB_SIG_* defines)         | SIG            |
- * | satellites  | Number of satellites being tracked                     | SATINVIEWCOUNT |
+ * | satellites  | Number of satellites in use                            | SATINUSECOUNT  |
  * | hdop        | Horizontal dilution of position                        | HDOP           |
  * | elv         | Elevation above mean sea level, in meters              | ELV (3)        |
  * | elv unit    | Unit of elevation ('M')                                | ELV (3)        |
@@ -88,7 +88,7 @@ typedef struct _NmeaGPGGA {
   double       longitude;
   char         longitudeEW;
   NmeaSignal   sig;
-  unsigned int inViewCount;
+  unsigned int inUseCount;
   double       hdop;
   double       elevation;
   char         elevationM;

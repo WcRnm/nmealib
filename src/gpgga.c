@@ -45,7 +45,7 @@ bool nmeaGPGGAParse(const char *s, const size_t sz, NmeaGPGGA *pack) {
   pack->latitude = NaN;
   pack->longitude = NaN;
   pack->sig = INT_MAX;
-  pack->inViewCount = UINT_MAX;
+  pack->inUseCount = UINT_MAX;
   pack->hdop = NaN;
   pack->elevation = NaN;
   pack->height = NaN;
@@ -61,7 +61,7 @@ bool nmeaGPGGAParse(const char *s, const size_t sz, NmeaGPGGA *pack) {
       &pack->longitude, //
       &pack->longitudeEW, //
       &pack->sig, //
-      &pack->inViewCount, //
+      &pack->inUseCount, //
       &pack->hdop, //
       &pack->elevation, //
       &pack->elevationM, //
@@ -122,10 +122,10 @@ bool nmeaGPGGAParse(const char *s, const size_t sz, NmeaGPGGA *pack) {
     pack->sig = NMEALIB_SIG_INVALID;
   }
 
-  if (pack->inViewCount != UINT_MAX) {
-    nmeaInfoSetPresent(&pack->present, NMEALIB_PRESENT_SATINVIEWCOUNT);
+  if (pack->inUseCount != UINT_MAX) {
+    nmeaInfoSetPresent(&pack->present, NMEALIB_PRESENT_SATINUSECOUNT);
   } else {
-    pack->inViewCount = 0;
+    pack->inUseCount = 0;
   }
 
   if (!isNaN(pack->hdop)) {
@@ -215,9 +215,9 @@ void nmeaGPGGAToInfo(const NmeaGPGGA *pack, NmeaInfo *info) {
     nmeaInfoSetPresent(&info->present, NMEALIB_PRESENT_SIG);
   }
 
-  if (nmeaInfoIsPresentAll(pack->present, NMEALIB_PRESENT_SATINVIEWCOUNT)) {
-    info->satellites.inViewCount = pack->inViewCount;
-    nmeaInfoSetPresent(&info->present, NMEALIB_PRESENT_SATINVIEWCOUNT);
+  if (nmeaInfoIsPresentAll(pack->present, NMEALIB_PRESENT_SATINUSECOUNT)) {
+    info->satellites.inUseCount = pack->inUseCount;
+    nmeaInfoSetPresent(&info->present, NMEALIB_PRESENT_SATINUSECOUNT);
   }
 
   if (nmeaInfoIsPresentAll(pack->present, NMEALIB_PRESENT_HDOP)) {
@@ -285,9 +285,9 @@ void nmeaGPGGAFromInfo(const NmeaInfo *info, NmeaGPGGA *pack) {
     pack->sig = NMEALIB_SIG_INVALID;
   }
 
-  if (nmeaInfoIsPresentAll(info->present, NMEALIB_PRESENT_SATINVIEWCOUNT)) {
-    pack->inViewCount = info->satellites.inViewCount;
-    nmeaInfoSetPresent(&pack->present, NMEALIB_PRESENT_SATINVIEWCOUNT);
+  if (nmeaInfoIsPresentAll(info->present, NMEALIB_PRESENT_SATINUSECOUNT)) {
+    pack->inUseCount = info->satellites.inUseCount;
+    nmeaInfoSetPresent(&pack->present, NMEALIB_PRESENT_SATINUSECOUNT);
   }
 
   if (nmeaInfoIsPresentAll(info->present, NMEALIB_PRESENT_HDOP)) {
@@ -371,8 +371,8 @@ size_t nmeaGPGGAGenerate(char *s, const size_t sz, const NmeaGPGGA *pack) {
     chars += snprintf(dst, available, ",");
   }
 
-  if (nmeaInfoIsPresentAll(pack->present, NMEALIB_PRESENT_SATINVIEWCOUNT)) {
-    chars += snprintf(dst, available, ",%02u", pack->inViewCount);
+  if (nmeaInfoIsPresentAll(pack->present, NMEALIB_PRESENT_SATINUSECOUNT)) {
+    chars += snprintf(dst, available, ",%02u", pack->inUseCount);
   } else {
     chars += snprintf(dst, available, ",");
   }
